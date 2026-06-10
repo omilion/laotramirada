@@ -5,6 +5,8 @@ const routes = [
   ["/conferencias", /Conferencias/i],
   ["/galeria", /Galeria|Galería/i],
   ["/noticias", /Noticias/i],
+  ["/noticias/mccloskey-y-las-predicciones-en-economia", /McCloskey y las predicciones/i],
+  ["/noticias/agenda-editorial-2026-mirada-larga", /Agenda editorial 2026/i],
   ["/contacto", /Contacto/i],
   ["/streaming", /Streaming/i],
 ] as const;
@@ -28,4 +30,12 @@ test.describe("public routes", () => {
       expect(consoleErrors).toEqual([]);
     });
   }
+});
+
+test("news archive and detail do not render post images", async ({ page }) => {
+  await page.goto("/noticias");
+  await expect(page.locator(".news-card-link img")).toHaveCount(0);
+
+  await page.goto("/noticias/agenda-editorial-2026-mirada-larga");
+  await expect(page.locator(".news-detail img")).toHaveCount(0);
 });

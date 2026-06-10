@@ -18,3 +18,18 @@ export type NewsItem = {
   slug: string;
   category: string;
 };
+
+export type EditorialPost = {
+  title: string;
+  slug: string;
+  date: string;
+  category: string;
+  tags: string[];
+  excerpt: string;
+  angle: string;
+  thesis: string;
+  whyNow: string;
+  close: string;
+  image?: string;
+  relatedConferenceSlugs: string[];
+};

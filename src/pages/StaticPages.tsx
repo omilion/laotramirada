@@ -1,5 +1,6 @@
 import {
   ArrowUpRight,
+  ArrowRight,
   CalendarDays,
   CheckCircle,
   ChevronLeft,
@@ -12,16 +13,18 @@ import {
   Maximize2,
   Newspaper,
   Radio,
+  Search,
   Send,
   Twitter,
   X,
   Youtube,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { PageHero } from "../components/PageHero";
 import { Seo } from "../components/Seo";
 import galleryImageData from "../data/galleryImages.json";
-import { featuredConference, getYoutubeThumbnail, newsItems } from "../lib/content";
+import { editorialPosts, formatDate, getEditorialPostYear } from "../lib/content";
 
 type GalleryImage = {
   id: number;
@@ -397,23 +400,141 @@ export function Gallery() {
 }
 
 export function News() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("q") ?? "");
+  const [year, setYear] = useState(searchParams.get("ano") ?? "Todos");
+  const [category, setCategory] = useState(searchParams.get("categoria") ?? "Todas");
+  const years = useMemo(
+    () => ["Todos", ...Array.from(new Set(editorialPosts.map(getEditorialPostYear))).sort().reverse()],
+    [],
+  );
+  const categories = useMemo(
+    () => ["Todas", ...Array.from(new Set(editorialPosts.map((post) => post.category))).sort()],
+    [],
+  );
+
+  useEffect(() => {
+    const nextQuery = searchParams.get("q") ?? "";
+    const nextYear = searchParams.get("ano") ?? "Todos";
+    const nextCategory = searchParams.get("categoria") ?? "Todas";
+    setQuery(nextQuery);
+    setYear(years.includes(nextYear) ? nextYear : "Todos");
+    setCategory(categories.includes(nextCategory) ? nextCategory : "Todas");
+  }, [categories, searchParams, years]);
+
+  const updateFilters = (nextQuery: string, nextYear: string, nextCategory: string) => {
+    setQuery(nextQuery);
+    setYear(nextYear);
+    setCategory(nextCategory);
+
+    const params = new URLSearchParams();
+    if (nextQuery.trim()) params.set("q", nextQuery.trim());
+    if (nextYear !== "Todos") params.set("ano", nextYear);
+    if (nextCategory !== "Todas") params.set("categoria", nextCategory);
+    setSearchParams(params, { replace: true });
+  };
+
+  const normalizedQuery = normalizeNewsText(query);
+  const visiblePosts = editorialPosts.filter((post) => {
+    const haystack = normalizeNewsText(`${post.title} ${post.excerpt} ${post.category} ${post.tags.join(" ")}`);
+    const matchesQuery = !normalizedQuery || haystack.includes(normalizedQuery);
+    const matchesYear = year === "Todos" || getEditorialPostYear(post) === year;
+    const matchesCategory = category === "Todas" || post.category === category;
+    return matchesQuery && matchesYear && matchesCategory;
+  });
+
   return (
     <>
-      <Seo title="Noticias" description="Noticias, columnas y archivo de prensa asociado a La Otra Mirada." />
-      <PageHero title="Noticias" eyebrow="Archivo editorial" image={getYoutubeThumbnail(featuredConference.youtubeId)} />
-      <section className="lom-section lom-shell">
-        <div className="news-grid">
-          {newsItems.concat(newsItems).map((item, index) => (
-            <article className="news-card" key={`${item.slug}-${index}`}>
-              <span>{item.category}</span>
-              <h3>{item.title}</h3>
-              <p>{item.excerpt}</p>
-            </article>
+      <Seo
+        title="Noticias"
+        description="Archivo editorial de La Otra Mirada: columnas, prensa y lecturas sobre libertad, democracia, seguridad, economía y geopolítica."
+        canonical="https://laotramirada.cl/noticias"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Noticias y archivo editorial",
+          description:
+            "Archivo editorial de La Otra Mirada con columnas, prensa y lecturas sobre ideas públicas.",
+          hasPart: editorialPosts.slice(0, 12).map((post) => ({
+            "@type": "BlogPosting",
+            headline: post.title,
+            datePublished: post.date,
+            url: `https://laotramirada.cl/noticias/${post.slug}`,
+          })),
+        }}
+      />
+      <PageHero
+        title="Noticias"
+        eyebrow="Archivo editorial"
+        description={`${editorialPosts.length} lecturas de archivo y continuidad editorial sobre libertad, democracia, seguridad, economía y geopolítica.`}
+      />
+      <section className="lom-section lom-shell-wide news-archive-section">
+        <div className="archive-toolbar news-toolbar">
+          <label className="search-box">
+            <Search size={18} />
+            <input
+              type="search"
+              placeholder="Buscar por tema, expositor o concepto"
+              value={query}
+              onChange={(event) => updateFilters(event.target.value, year, category)}
+            />
+          </label>
+          <div className="topic-tabs" role="tablist" aria-label="Filtrar noticias por año">
+            {years.map((item) => (
+              <button
+                className={year === item ? "is-active" : ""}
+                key={item}
+                type="button"
+                onClick={() => updateFilters(query, item, category)}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+          <div className="topic-tabs" role="tablist" aria-label="Filtrar noticias por categoría">
+            {categories.map((item) => (
+              <button
+                className={category === item ? "is-active" : ""}
+                key={item}
+                type="button"
+                onClick={() => updateFilters(query, year, item)}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="news-count">
+          {visiblePosts.length} publicaciones
+          {year !== "Todos" ? ` · ${year}` : ""}
+        </div>
+        <div className="news-grid news-archive-grid">
+          {visiblePosts.map((post) => (
+            <Link className="news-card news-card-link" key={post.slug} to={`/noticias/${post.slug}`}>
+              <span className="news-card-meta">{formatDate(post.date)} · {post.category}</span>
+              <h3>{post.title}</h3>
+              <p>{post.excerpt}</p>
+              <span className="news-tags" aria-label="Etiquetas">
+                {post.tags.slice(0, 3).map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </span>
+              <span className="pillar-card-cta">
+                Leer análisis <ArrowRight size={16} />
+              </span>
+            </Link>
           ))}
         </div>
       </section>
     </>
   );
+}
+
+function normalizeNewsText(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase();
 }
 
 export function Contact() {

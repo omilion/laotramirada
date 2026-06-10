@@ -1,6 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import conferences from "../src/data/conferences.json" with { type: "json" };
+import editorialPosts from "../src/data/editorialPosts.json" with { type: "json" };
+import historicalPosts from "../src/data/historicalPosts.json" with { type: "json" };
 
 const distDir = path.resolve("dist");
 const baseUrl = "https://laotramirada.cl";
@@ -41,6 +43,8 @@ const routes = [
   "contacto",
   "streaming",
   ...scoped.map((item) => `conferencias/${item.slug}`),
+  ...editorialPosts.map((item) => `noticias/${item.slug}`),
+  ...historicalPosts.map((item) => `noticias/${item.slug}`),
 ];
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

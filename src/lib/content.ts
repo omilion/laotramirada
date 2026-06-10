@@ -1,6 +1,8 @@
 import rawConferences from "../data/conferences.json";
 import { conferenceVideoIdSet } from "../data/conferenceScope";
-import type { Conference, NewsItem } from "../types";
+import rawEditorialPosts from "../data/editorialPosts.json";
+import rawHistoricalPosts from "../data/historicalPosts.json";
+import type { Conference, EditorialPost, NewsItem } from "../types";
 
 export const allParsedConferences = rawConferences as Conference[];
 
@@ -16,6 +18,38 @@ export const featuredConference =
 
 export function getConferenceBySlug(slug: string | undefined) {
   return conferences.find((conference) => conference.slug === slug);
+}
+
+export const editorialPosts = [
+  ...(rawEditorialPosts as EditorialPost[]),
+  ...(rawHistoricalPosts as EditorialPost[]),
+]
+  .sort((a, b) => b.date.localeCompare(a.date));
+
+export function getEditorialPostBySlug(slug: string | undefined) {
+  return editorialPosts.find((post) => post.slug === slug);
+}
+
+export function getEditorialPostYear(post: EditorialPost) {
+  return post.date.slice(0, 4);
+}
+
+export function getEditorialPostMarkdown(post: EditorialPost) {
+  return [
+    "## Lectura editorial",
+    post.angle,
+    post.thesis,
+    "## Por qué importa",
+    post.whyNow,
+    post.close,
+  ].join("\n\n");
+}
+
+export function getRelatedConferencesForPost(post: EditorialPost) {
+  return post.relatedConferenceSlugs
+    .map((slug) => getConferenceBySlug(slug))
+    .filter((conference): conference is Conference => Boolean(conference))
+    .slice(0, 3);
 }
 
 export function getYoutubeThumbnail(youtubeId: string, quality: "max" | "high" = "high") {
@@ -52,26 +86,9 @@ export function getConferenceTopics(conference: Conference) {
     .slice(0, 3);
 }
 
-export const newsItems: NewsItem[] = [
-  {
-    title: "Chile: Capitalismo, virtudes y musica electronica",
-    excerpt:
-      "Una lectura cultural y economica sobre el modo en que las ideas se transforman en instituciones, habitos y nuevas formas de prosperidad.",
-    slug: "chile-capitalismo-virtudes-musica-electronica",
-    category: "Opinion",
-  },
-  {
-    title: "El discurso contra el capitalismo se vuelve peor despues de cada crisis",
-    excerpt:
-      "Deirdre McCloskey analiza como las narrativas publicas cambian cuando la economia enfrenta shocks y tensiones politicas.",
-    slug: "discurso-contra-capitalismo-crisis",
-    category: "Prensa",
-  },
-  {
-    title: "McCloskey y las predicciones en economia",
-    excerpt:
-      "Una aproximacion critica al rol de los economistas, la incertidumbre y los limites de los modelos predictivos.",
-    slug: "mccloskey-predicciones-economia",
-    category: "Archivo",
-  },
-];
+export const newsItems: NewsItem[] = editorialPosts.slice(0, 3).map((post) => ({
+  title: post.title,
+  excerpt: post.excerpt,
+  slug: post.slug,
+  category: post.category,
+}));
