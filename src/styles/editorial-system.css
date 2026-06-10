@@ -2279,8 +2279,8 @@ body.is-conferences-toolbar-active .lom-header.is-scroll.is-visible {
 .contact-topic-grid h3 {
   margin: 22px 0 12px;
   font-family: var(--lom-font-display);
-  font-size: clamp(25px, 2.1vw, 34px);
-  line-height: 0.98;
+  font-size: clamp(21px, 1.55vw, 27px);
+  line-height: 1.04;
   max-width: 100%;
   overflow-wrap: normal;
   text-wrap: balance;
@@ -2309,7 +2309,8 @@ body.is-conferences-toolbar-active .lom-header.is-scroll.is-visible {
 }
 
 .contact-form-heading h2 {
-  font-size: clamp(30px, 3.4vw, 52px);
+  font-size: clamp(28px, 2.55vw, 42px);
+  line-height: 1;
 }
 
 .contact-field-grid {
