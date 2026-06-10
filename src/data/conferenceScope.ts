@@ -1,0 +1,27 @@
+export const conferenceVideoIds = [
+  "2pGObT6T-XE",
+  "9gTf8H3Ya9k",
+  "A0mRUTTPt30",
+  "BI2jcDcGq6g",
+  "cQ1BB0tOMI0",
+  "EDCqWK8h5AE",
+  "EeKw2kfwFYA",
+  "erbqSsUBK0k",
+  "Ey4XuixqdKQ",
+  "hL0883CI0BQ",
+  "J6plxDBnz5A",
+  "jCKWiwdpuuY",
+  "l1DbR3EQZtI",
+  "Ld8dkr_pnGY",
+  "mm8bDMegZik",
+  "nB0YeCZMg1E",
+  "PiEk7zcpL7I",
+  "tlGY6s-ZJug",
+  "tm2jCUGG-Lo",
+  "TmG5OizxSAo",
+  "uGrPdngMZ7A",
+  "VN6S-csF8Gk",
+  "WDH8JoVU6aU",
+] as const;
+
+export const conferenceVideoIdSet = new Set<string>(conferenceVideoIds);
