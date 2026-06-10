@@ -23,9 +23,12 @@ export type EditorialPost = {
   title: string;
   slug: string;
   date: string;
+  time?: string;
+  author?: string;
   category: string;
   tags: string[];
   excerpt: string;
+  body?: string[];
   angle: string;
   thesis: string;
   whyNow: string;

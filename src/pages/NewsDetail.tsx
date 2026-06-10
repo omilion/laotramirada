@@ -1,12 +1,15 @@
-import { ArrowLeft, ArrowRight, CalendarDays, Tag } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays, Clock3, PenLine, Tag } from "lucide-react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { MarkdownContent } from "../components/MarkdownContent";
 import { Seo } from "../components/Seo";
 import {
   editorialPosts,
   formatDate,
+  getEditorialPostAuthor,
   getEditorialPostBySlug,
   getEditorialPostMarkdown,
+  getEditorialPostPublishedAt,
+  getEditorialPostTime,
   getRelatedConferencesForPost,
 } from "../lib/content";
 import { keepTitleWordsTogether } from "../lib/text";
@@ -35,11 +38,11 @@ export function NewsDetail() {
           "@type": "BlogPosting",
           headline: post.title,
           description: post.excerpt,
-          datePublished: post.date,
-          dateModified: post.date,
+          datePublished: getEditorialPostPublishedAt(post),
+          dateModified: getEditorialPostPublishedAt(post),
           author: {
             "@type": "Organization",
-            name: "La Otra Mirada",
+            name: getEditorialPostAuthor(post),
           },
           publisher: {
             "@type": "Organization",
@@ -63,6 +66,14 @@ export function NewsDetail() {
               <span>
                 <CalendarDays size={16} />
                 {formatDate(post.date)}
+              </span>
+              <span>
+                <Clock3 size={16} />
+                {getEditorialPostTime(post)} hrs
+              </span>
+              <span>
+                <PenLine size={16} />
+                {getEditorialPostAuthor(post)}
               </span>
               <span>
                 <Tag size={16} />

@@ -24,7 +24,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { PageHero } from "../components/PageHero";
 import { Seo } from "../components/Seo";
 import galleryImageData from "../data/galleryImages.json";
-import { editorialPosts, formatDate, getEditorialPostYear } from "../lib/content";
+import { editorialPosts, getEditorialPostMeta, getEditorialPostPublishedAt, getEditorialPostYear } from "../lib/content";
 
 type GalleryImage = {
   id: number;
@@ -458,7 +458,11 @@ export function News() {
           hasPart: editorialPosts.slice(0, 12).map((post) => ({
             "@type": "BlogPosting",
             headline: post.title,
-            datePublished: post.date,
+            datePublished: getEditorialPostPublishedAt(post),
+            author: {
+              "@type": "Organization",
+              name: "La Otra Mirada",
+            },
             url: `https://laotramirada.cl/noticias/${post.slug}`,
           })),
         }}
@@ -511,7 +515,7 @@ export function News() {
         <div className="news-grid news-archive-grid">
           {visiblePosts.map((post) => (
             <Link className="news-card news-card-link" key={post.slug} to={`/noticias/${post.slug}`}>
-              <span className="news-card-meta">{formatDate(post.date)} · {post.category}</span>
+              <span className="news-card-meta">{getEditorialPostMeta(post)} · {post.category}</span>
               <h3>{post.title}</h3>
               <p>{post.excerpt}</p>
               <span className="news-tags" aria-label="Etiquetas">

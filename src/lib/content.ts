@@ -26,6 +26,8 @@ export const editorialPosts = [
 ]
   .sort((a, b) => b.date.localeCompare(a.date));
 
+export const editorialPostAuthor = "La Otra Mirada";
+
 export function getEditorialPostBySlug(slug: string | undefined) {
   return editorialPosts.find((post) => post.slug === slug);
 }
@@ -34,15 +36,32 @@ export function getEditorialPostYear(post: EditorialPost) {
   return post.date.slice(0, 4);
 }
 
+export function getEditorialPostAuthor(post: EditorialPost) {
+  return post.author?.trim() || editorialPostAuthor;
+}
+
+export function getEditorialPostTime(post: EditorialPost) {
+  if (post.time) return post.time;
+  const day = Number(post.date.slice(8, 10));
+  return day >= 20 ? "18:00" : "09:00";
+}
+
+export function getEditorialPostPublishedAt(post: EditorialPost) {
+  return `${post.date}T${getEditorialPostTime(post)}:00`;
+}
+
+export function getEditorialPostMeta(post: EditorialPost) {
+  return `${getEditorialPostAuthor(post)} · ${formatDate(post.date)} · ${getEditorialPostTime(post)} hrs`;
+}
+
 export function getEditorialPostMarkdown(post: EditorialPost) {
-  return [
-    "## Lectura editorial",
-    post.angle,
-    post.thesis,
-    "## Por qué importa",
-    post.whyNow,
-    post.close,
-  ].join("\n\n");
+  const body = post.body?.map((paragraph) => paragraph.trim()).filter(Boolean);
+  if (body?.length) return body.join("\n\n");
+
+  return [post.excerpt, post.angle, post.thesis, post.whyNow, post.close]
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+    .join("\n\n");
 }
 
 export function getRelatedConferencesForPost(post: EditorialPost) {
