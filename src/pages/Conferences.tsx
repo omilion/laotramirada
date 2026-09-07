@@ -6,7 +6,7 @@ import { PageHero } from "../components/PageHero";
 import { Seo } from "../components/Seo";
 import { conferences, featuredConference, getConferenceTopics, getYoutubeThumbnail } from "../lib/content";
 
-const conferencesHeroImage = "/conferencistas/banner-conferencias-ferguson.jpg";
+const conferencesHeroImage = "/conferencistas/banner-conferencias-ferguson.webp";
 
 export function Conferences() {
   const [searchParams, setSearchParams] = useSearchParams();

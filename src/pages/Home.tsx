@@ -86,21 +86,21 @@ const topicCards = [
     text: "Vargas Llosa, Tomasi, Hirsi Ali y otras voces sobre instituciones, libertad de expresion y limites del poder.",
     href: "/conferencias?tema=Libertad",
     topic: "Libertad",
-    image: "/conferencistas/conferencia-mario-vargas-llosa.jpg",
+    image: "/conferencistas/conferencia-mario-vargas-llosa.webp",
   },
   {
     title: "Geopolitica, seguridad e IA",
     text: "Crimen organizado, defensa, inteligencia artificial y el nuevo orden mundial visto desde America Latina.",
     href: "/conferencias?tema=Seguridad",
     topic: "Seguridad",
-    image: "/conferencistas/conferencia-oscar-naranjo-trujillo.jpg",
+    image: "/conferencistas/conferencia-oscar-naranjo-trujillo.webp",
   },
   {
     title: "Economia, empresa y sociedad",
     text: "Libre mercado, crecimiento y responsabilidad empresarial con McCloskey, Polman, Sorman y mas.",
     href: "/conferencias?tema=Economia",
     topic: "Economia",
-    image: "/conferencistas/conferencia-deirdre-mccloskey.jpg",
+    image: "/conferencistas/conferencia-deirdre-mccloskey.webp",
   },
 ];
 

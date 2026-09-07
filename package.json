@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build && node scripts/generate-static-assets.mjs",
     "preview": "vite preview",
+    "optimize:images": "node scripts/optimize-public-images.mjs",
     "parse:conferences": "node scripts/parse-conferences.mjs",
     "sync:gallery": "node scripts/sync-gallery-media.mjs",
     "check": "tsc -b && vite build",

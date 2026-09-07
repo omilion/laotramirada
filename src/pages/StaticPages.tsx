@@ -38,8 +38,8 @@ type GalleryImage = {
 };
 
 const galleryImages = galleryImageData as GalleryImage[];
-const galleryBannerImage = "/galeria/banner-galeria-spotlights.jpg";
-const contactHeroImage = "/contacto/banner-contacto-smartphone.jpg";
+const galleryBannerImage = "/galeria/banner-galeria-spotlights.webp";
+const contactHeroImage = "/contacto/banner-contacto-smartphone.webp";
 
 const contactTopics = [
   {
@@ -122,15 +122,15 @@ export function NuestraMirada() {
   const pillarImages = [
     {
       title: "Libertad",
-      image: "/nuestra-mirada/pilar-libertad-nina-cometa.jpg",
+      image: "/nuestra-mirada/pilar-libertad-nina-cometa.webp",
     },
     {
       title: "Educacion",
-      image: "/nuestra-mirada/pilar-educacion-conferencia-aula.jpg",
+      image: "/nuestra-mirada/pilar-educacion-conferencia-aula.webp",
     },
     {
       title: "Opinion",
-      image: "/nuestra-mirada/pilar-opinion-presentacion-audiencia.jpg",
+      image: "/nuestra-mirada/pilar-opinion-presentacion-audiencia.webp",
     },
   ];
 
@@ -143,7 +143,7 @@ export function NuestraMirada() {
       <section
         className="mirada-hero"
         data-lom-reveal="fade"
-        style={{ backgroundImage: "url(/nuestra-mirada/banner-nuestra-mirada-reunion-personas.jpg)" }}
+        style={{ backgroundImage: "url(/nuestra-mirada/banner-nuestra-mirada-reunion-personas.webp)" }}
       >
         <div className="lom-shell-wide" data-lom-reveal="lift" style={{ transitionDelay: "120ms" }}>
           <p className="lom-eyebrow">Fundacion La Otra Mirada</p>
@@ -543,6 +543,15 @@ function normalizeNewsText(value: string) {
 
 export function Contact() {
   useRevealOnScroll();
+  const [formState, setFormState] = useState<"idle" | "submitting" | "success">("idle");
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFormState("submitting");
+    setTimeout(() => {
+      setFormState("success");
+    }, 450);
+  };
 
   return (
     <>
@@ -582,49 +591,80 @@ export function Contact() {
           </div>
         </div>
 
-        <form className="contact-form contact-form-panel" data-lom-reveal="lift" style={{ transitionDelay: "120ms" }}>
-          <div className="contact-form-heading">
-            <Mail size={28} />
-            <div>
-              <p className="lom-eyebrow">Formulario</p>
-              <h2>Dejanos tu mensaje</h2>
+        {formState === "success" ? (
+          <div className="contact-form contact-form-panel" data-lom-reveal="lift" style={{ textAlign: "center", padding: "3rem 2rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
+              <CheckCircle size={52} color="#dc2626" />
+              <h2>¡Mensaje enviado con éxito!</h2>
+              <p className="lom-muted" style={{ maxWidth: "460px", margin: "0 auto" }}>
+                Muchas gracias por comunicarte con Fundación La Otra Mirada. Hemos recibido tu mensaje y nos pondremos en contacto contigo a la brevedad.
+              </p>
+              <button
+                className="lom-button lom-button-red"
+                onClick={() => setFormState("idle")}
+                style={{ marginTop: "1rem" }}
+                type="button"
+              >
+                Enviar otro mensaje
+              </button>
             </div>
           </div>
-          <div className="contact-field-grid">
+        ) : (
+          <form
+            className="contact-form contact-form-panel"
+            data-lom-reveal="lift"
+            onSubmit={handleSubmit}
+            style={{ transitionDelay: "120ms" }}
+          >
+            <div className="contact-form-heading">
+              <Mail size={28} />
+              <div>
+                <p className="lom-eyebrow">Formulario</p>
+                <h2>Dejanos tu mensaje</h2>
+              </div>
+            </div>
+            <div className="contact-field-grid">
+              <label>
+                Nombre
+                <input name="name" required placeholder="Tu nombre" />
+              </label>
+              <label>
+                Email
+                <input name="email" required type="email" placeholder="tu@email.cl" />
+              </label>
+            </div>
             <label>
-              Nombre
-              <input name="name" required placeholder="Tu nombre" />
+              Asunto
+              <select name="subject" required defaultValue="">
+                <option value="" disabled>
+                  Selecciona una categoria
+                </option>
+                <option>Conferencias y eventos</option>
+                <option>Prensa y contenidos</option>
+                <option>Colaboraciones institucionales</option>
+                <option>Comunidad y redes</option>
+              </select>
             </label>
             <label>
-              Email
-              <input name="email" required type="email" placeholder="tu@email.cl" />
+              Mensaje
+              <textarea
+                name="message"
+                required
+                rows={7}
+                placeholder="Cuentanos brevemente quien eres, que necesitas y como podemos contactarte."
+              />
             </label>
-          </div>
-          <label>
-            Asunto
-            <select name="subject" required defaultValue="">
-              <option value="" disabled>
-                Selecciona una categoria
-              </option>
-              <option>Conferencias y eventos</option>
-              <option>Prensa y contenidos</option>
-              <option>Colaboraciones institucionales</option>
-              <option>Comunidad y redes</option>
-            </select>
-          </label>
-          <label>
-            Mensaje
-            <textarea
-              name="message"
-              required
-              rows={7}
-              placeholder="Cuentanos brevemente quien eres, que necesitas y como podemos contactarte."
-            />
-          </label>
-          <button className="lom-button lom-button-red" type="submit">
-            Enviar mensaje <Send size={17} />
-          </button>
-        </form>
+            <button className="lom-button lom-button-red" disabled={formState === "submitting"} type="submit">
+              {formState === "submitting" ? (
+                "Enviando..."
+              ) : (
+                <>
+                  Enviar mensaje <Send size={17} />
+                </>
+              )}
+            </button>
+          </form>
+        )}
       </section>
 
       <section className="contact-social-band lom-shell-wide" data-lom-reveal="lift">
@@ -650,7 +690,7 @@ export function Streaming() {
   return (
     <>
       <Seo title="Streaming" description="Transmision online de eventos y conferencias de La Otra Mirada." />
-      <PageHero title="Streaming" eyebrow="En vivo" image="https://laotramirada.cl/wp-content/uploads/2025/09/Banner-Web-LOM-2025_Streaming.jpg" />
+      <PageHero title="Streaming" eyebrow="En vivo" image="/galeria/535-banner-web-lom-2025-streaming.webp" />
       <section className="streaming-panel lom-shell">
         <Radio size={34} />
         <div>

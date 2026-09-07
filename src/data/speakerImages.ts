@@ -1,22 +1,22 @@
 const speakerImageByName: Record<string, string> = {
-  "ayaan hirsi ali": "/conferencistas/conferencia-ayaan-hirsi-ali.jpg",
-  "cayetana alvarez de toledo y peralta ramos": "/conferencistas/conferencia-cayetana-alvarez-de-toledo.png",
-  "deirdre nansen mccloskey": "/conferencistas/conferencia-deirdre-mccloskey.jpg",
-  "guy sorman": "/conferencistas/conferencia-guy-sorman.jpg",
-  "ivan duque marquez": "/conferencistas/conferencia-ivan-duque-marquez.jpg",
-  "john tomasi": "/conferencistas/conferencia-john-tomasi.jpg",
-  "mario vargas llosa": "/conferencistas/conferencia-mario-vargas-llosa.jpg",
-  "mauricio macri": "/conferencistas/conferencia-mauricio-macri.jpg",
+  "ayaan hirsi ali": "/conferencistas/conferencia-ayaan-hirsi-ali.webp",
+  "cayetana alvarez de toledo y peralta ramos": "/conferencistas/conferencia-cayetana-alvarez-de-toledo.webp",
+  "deirdre nansen mccloskey": "/conferencistas/conferencia-deirdre-mccloskey.webp",
+  "guy sorman": "/conferencistas/conferencia-guy-sorman.webp",
+  "ivan duque marquez": "/conferencistas/conferencia-ivan-duque-marquez.webp",
+  "john tomasi": "/conferencistas/conferencia-john-tomasi.webp",
+  "mario vargas llosa": "/conferencistas/conferencia-mario-vargas-llosa.webp",
+  "mauricio macri": "/conferencistas/conferencia-mauricio-macri.webp",
   "moises naim": "/conferencistas/conferencia-moises-naim.webp",
-  "niall ferguson": "/conferencistas/conferencia-niall-ferguson.jpg",
-  "oscar naranjo trujillo": "/conferencistas/conferencia-oscar-naranjo-trujillo.jpg",
-  "paul polman": "/conferencistas/conferencia-paul-polman.jpeg",
-  "sergio fernando moro": "/conferencistas/conferencia-sergio-moro.jpg",
-  "yoani sanchez": "/conferencistas/conferencia-yoani-sanchez.jpg",
+  "niall ferguson": "/conferencistas/conferencia-niall-ferguson.webp",
+  "oscar naranjo trujillo": "/conferencistas/conferencia-oscar-naranjo-trujillo.webp",
+  "paul polman": "/conferencistas/conferencia-paul-polman.webp",
+  "sergio fernando moro": "/conferencistas/conferencia-sergio-moro.webp",
+  "yoani sanchez": "/conferencistas/conferencia-yoani-sanchez.webp",
 };
 
 const conferenceImageByYoutubeId: Record<string, string> = {
-  BI2jcDcGq6g: "/conferencistas/conferencia-geopolitica-seguridad.jpg",
+  BI2jcDcGq6g: "/conferencistas/conferencia-geopolitica-seguridad.webp",
 };
 
 const speakerAliases: Record<string, string> = {
