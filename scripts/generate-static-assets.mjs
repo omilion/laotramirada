@@ -61,3 +61,10 @@ ${routes
 
 fs.mkdirSync(distDir, { recursive: true });
 fs.writeFileSync(path.join(distDir, "sitemap.xml"), sitemap, "utf8");
+
+const indexHtmlPath = path.join(distDir, "index.html");
+if (fs.existsSync(indexHtmlPath)) {
+  const indexHtml = fs.readFileSync(indexHtmlPath, "utf8");
+  fs.writeFileSync(path.join(distDir, "200.html"), indexHtml, "utf8");
+  fs.writeFileSync(path.join(distDir, "404.html"), indexHtml, "utf8");
+}
